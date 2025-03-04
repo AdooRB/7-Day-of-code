@@ -29,6 +29,7 @@ asw3.includes('FULL') ? console.log('Eligiste desarrollo en "Fullstack".'): cons
 listaAprendizaje = preguntar_Tec("¿Qué tecnologías quieres especializarte o conocer?  ");
 
 console.log("Fin del Juego");
+resumen();
 
 
 //Pregunta con respuestas establecidas
@@ -95,4 +96,25 @@ function cambio_de_Variables(evaluacion,condicion1, condicion2, variables1, vari
         variablesCorrectas = variables2;
     }
     return variablesCorrectas;
+}
+
+//resumen de datos recopilados
+function resumen(){
+    console.log("");
+    console.log("********RESUMEN********");
+    
+    //1era pregunta
+    console.log(`Estudios: ${areaRes}`)
+
+    //2da pregunta
+    console.log(`Lenguaje de programación de ${areaRes} a estudiar: ${asw2}`);
+
+    //3ra pregunta
+    console.log(`Especialización en: ${asw3}`);
+
+    //4ta pregunta
+    console.log(`Lista de lenguajes de programación para estudiar: ${listaAprendizaje.toString()}`);
+    
+    console.log("***********************");
+
 }

@@ -4,51 +4,95 @@ const areas = ["BACK-END", "BACKEND", "FRONT-END", "FRONTEND"];
 const errorMsg = ["Área no reconocida. \nIngrese correctamente el área.", "Lenguaje de programación incorrectro.\nIngrese correctamente el lenguaje de programación."];
 let errorNum = 0;
 let errorHay = false;
-let fin = false;
-let area = "";
+let areaRes = "";
 let pregAlterna = "";
 let asw2 = "";
+let asw3 = "";
+let listaAprendizaje = [];
+let nuevasRespuestas = [];
 
-while(fin == false){
-    
-    // area = prompt("¿Cuál área de estudios de la programación quiere estudiar? (Back-End / Front-End)    ").toUpperCase();
-        
-    area = preguntar("¿Cuál área de estudios de la programación quiere estudiar? (Back-End / Front-End)    ", areas, 0);
-    pregAlterna = "¿Cuál lenguaje de programación queres estudiar ";
-    area.includes('B') ? pregAlterna +="C# o Java?  " : pregAlterna += "React o Vue?    ";
-    asw2 = preguntar(pregAlterna,["C#", "JAVA", "REACT", "VUE"], 1);
 
-    console.log(asw2);
-    
-    fin = true;
+//Paso 1 "Back-end o Front-end"
+areaRes = preguntar_Con_Respuesta("¿Cuál área de estudios de la programación quiere estudiar? (Back-End / Front-End)    ", areas, 0);
 
-}
+//Paso 2 estudiar "C# o Java" - "React o Vue"
+pregAlterna = "¿Cuál lenguaje de programación queres estudiar ";
+areaRes.includes('B') ? pregAlterna +="C# o Java?  " : pregAlterna += "React o Vue?    ";
+nuevasRespuestas = cambio_de_Variables(areaRes,'BACK','FRONT',["C#","JAVA"],["REACT","VUE"]);
+asw2 = preguntar_Con_Respuesta(pregAlterna,nuevasRespuestas, 1);
+
+//Paso 3 "Especialización" o "Fullstack"
+asw3 = pregunta_Libre(`¿Quieres seguir especializandote en el área de "${areaRes.toLowerCase()}" o desarrollarte para convertirte en "Fullstack"?  `).toUpperCase();
+asw3.includes('FULL') ? console.log('Eligiste desarrollo en "Fullstack".'): console.log(`Eligiste especialización en "${areaRes.toLowerCase()}".`);
+
+//Paso 4 ¿Qué más tecnologías?
+listaAprendizaje = preguntar_Tec("¿Qué tecnologías quieres especializarte o conocer?  ");
 
 console.log("Fin del Juego");
 
-function preguntar(pregunta, respuestas, numError){
+
+//Pregunta con respuestas establecidas
+function preguntar_Con_Respuesta(pregunta, respuestas, numError){
 
     let respuesta = prompt(pregunta).toUpperCase();
     errorNum = numError;
 
     if(respuestas.includes(respuesta) == false){
         errorHay = true;
-        mostrarError(numError);
-        respuesta = repreguntar(pregunta,respuestas, numError);
+        mostrar_Error(numError);
+        respuesta = re_preguntar(pregunta,respuestas, numError);
     }
     return respuesta;
 }
 
-function repreguntar(pregunta, respuestas, numError){
+//Pregunta sin respuestas establecidas
+function pregunta_Libre(pregunta){
+    let respuesta = prompt(pregunta).toUpperCase();
+    return respuesta;
+}
+
+//Pregunta con obj. de recopilar información
+function preguntar_Tec(pregunta){
+    let listaDeAprendizaje = [];
+    let nuevaTec = "";
+    let conocerOtrasTec = true;
+
+    nuevaTec = (pregunta_Libre(pregunta));
+    nuevaTec.includes(",") ? listaDeAprendizaje = nuevaTec.split(','): listaDeAprendizaje.push(nuevaTec);
+    nuevaTec = "";
+
+    while(conocerOtrasTec == true){
+        nuevaTec = pregunta_Libre("¿Hay otra tecnología que te gustaría conocer? ");
+        nuevaTec.toUpperCase() == 'NO' ? conocerOtrasTec = false: listaDeAprendizaje.push(nuevaTec);
+        if(nuevaTec.toUpperCase() != 'NO') console.log(`Ingresaste: ${nuevaTec}`);
+    }
+
+    return listaDeAprendizaje;
+
+}
+
+//Pregunta genera un ciclo para la *pregunta_Con_Respuesta, sino coinside con respuestas definidad.
+function re_preguntar(pregunta, respuestas, numError){
     let respuesta = "";
 
     while(errorHay == true){
         respuesta = prompt(pregunta).toUpperCase();
-        respuestas.includes(respuesta) == true ? errorHay = false: mostrarError(numError);
+        respuestas.includes(respuesta) == true ? errorHay = false: mostrar_Error(numError);
     }
     return respuesta;
 }
 
-function mostrarError(numErrors){
+function mostrar_Error(numErrors){
     console.log(errorMsg[numErrors]);
+}
+
+//organiza las respuestas definidas
+function cambio_de_Variables(evaluacion,condicion1, condicion2, variables1, variables2){
+    let variablesCorrectas = [];
+    if(evaluacion.includes(condicion1)){
+        variablesCorrectas = variables1; 
+    }else if(evaluacion.includes(condicion2)){
+        variablesCorrectas = variables2;
+    }
+    return variablesCorrectas;
 }

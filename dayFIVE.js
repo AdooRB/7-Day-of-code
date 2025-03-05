@@ -13,7 +13,7 @@ let entrada = "";
 let categoria = "";
 
 while(true){
-    entrada = prompt("¿Deseas agregar un alimento a tu lista de compras?    ");
+    entrada = iniciar_Pregunta("¿Deseas agregar un alimento a tu lista de compras?    ");
     console.log(`Primera entrada: ${entrada}`);
     if (entrada.toUpperCase() == 'NO') break;
     
@@ -35,5 +35,16 @@ function menu_Categoria(){
     }
     mensaje += "\n"
     return mensaje;
+}
+
+function iniciar_Pregunta(pregunta){
+    let respuesta = prompt(pregunta);
+    
+    while(respuesta.toUpperCase() != 'SI' && respuesta.toUpperCase() != 'NO'){
+        console.log("Valor incorrecto. Digitaliza 'si' o 'no'.");
+        respuesta = prompt(pregunta);
+    }
+
+    return respuesta;
 }
 

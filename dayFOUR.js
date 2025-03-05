@@ -1,6 +1,6 @@
 const prompt = require("prompt-sync")();
 
-const numeroSecreto = 5;
+const numeroSecreto = generarNumero();
 let intentos = 3;
 let acierto = 0;
 
@@ -15,5 +15,10 @@ while(intentos > 0){
         intentos --;
         if(intentos != 0) console.log(`Oh... No era. Tienes ${intentos} ${intentos != 1 ? "intentos": "intento"} más.`);
     }
+}
 
+intentos == 0 ? console.log(`Se te terminó los intentos. El número a adivinar era: ${numeroSecreto}`): console.log(`Fin del juego`);
+
+function generarNumero(){
+    return Math.floor(Math.random()*10 +1);
 }

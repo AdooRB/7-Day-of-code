@@ -7,7 +7,7 @@ let categoria = "";
 //ciclo principal del programa
 while(true){
     //pregunta para continuar o salir del ciclo principal
-    entrada = iniciar_Pregunta(`¿Deseas agregar ${listaDeCompras.length == 0 ? "un" : "otro"} alimento a tu lista de compras?    `);
+    entrada = preguntar_SI_NO(`¿Deseas agregar ${listaDeCompras.length == 0 ? "un" : "otro"} alimento a tu lista de compras?    `);
     if (entrada.toUpperCase() == 'NO') break;
     
     //2da pregunta, digitalizar el alimento
@@ -16,10 +16,13 @@ while(true){
     //3ra pregunta, categorizar el alimento y lo añade a la lista de compras
     categoria = categorizar_Alimento(`¿En que categoría encaja este alimento? (ingresa el #): ${menu_Categoria()}`);
     listaDeCompras.push(entrada +":" + categorias[categoria - 1]);
+
+    //4ta pregunta, eleiminar un elemento
+    entrada = eliminar_dato(`¿Deseas eleminar un elemento?   `);
 }
 
 //mostrar la "Lista de compras" por categorías
-imprimir_Lista();
+imprimir_Lista("LISTA DE COMPRAS:","*-");
 
 //enumera las categorias
 function menu_Categoria(){
@@ -32,7 +35,7 @@ function menu_Categoria(){
 }
 
 //pregunta y repite pregunta si la respuesta nos es "SI/NO"
-function iniciar_Pregunta(pregunta){
+function preguntar_SI_NO(pregunta){
     let respuesta = prompt(pregunta);
     
     while(respuesta.toUpperCase() != 'SI' && respuesta.toUpperCase() != 'NO'){
@@ -55,9 +58,10 @@ function categorizar_Alimento(pregunta){
 }
 
 //ordena y muestra los datos de la lista de compras
-function imprimir_Lista(){
-    console.log("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-    console.log("LISTA DE COMPRAS:");
+function imprimir_Lista(titulo,adorno){
+    let newAdorno = crear_adorno(adorno);
+    console.log(`\n${newAdorno}`);
+    console.log(titulo);
     
     let alimento = "";
 
@@ -77,7 +81,44 @@ function imprimir_Lista(){
 
         alimento == `${categorias[i_categoria]}: ` ? alimento = "": console.log(`   ${alimento}`);
     }
-    console.log("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+    console.log(`${newAdorno}\n`);
     return;
+}
+
+//busca y elimina datos, y muestra la nueva lista de compras
+function eliminar_dato(pregunta){
+    let respuesta = preguntar_SI_NO(pregunta);
+    let alimento = "";
+    let encontrado = false;
+    
+    if(respuesta.toUpperCase() == "NO") return;
+    
+    imprimir_Lista("PRE-LISTA DE COMPRAS:",".. ")
+
+    alimento = prompt(`¿Qué alimento deseas eliminar?   `);
+    for(let i = 0; i < listaDeCompras.length; i++){
+        if(listaDeCompras[i].includes(alimento) && categorias.includes(alimento) == false){
+            listaDeCompras.splice(i,1);
+            encontrado = true;
+            imprimir_Lista("NUEVA LISTA DE COMPRAS:","~>");
+            // i --;
+        }
+    }
+    
+    if(encontrado == false){
+        console.log(`No se encontró "${alimento}" en la lista de compras.`);
+        console.log("Ingrese el elemento correcto.");
+        eliminar_dato(pregunta);
+    }
+    return;
+}
+
+//añade adono para la impresión de la List de Compras
+function crear_adorno(adorno){
+    let nuevoAdorno = "";
+    for(let i = 0;i < 18; i++){
+        nuevoAdorno += adorno;
+    }
+    return nuevoAdorno;
 }
 

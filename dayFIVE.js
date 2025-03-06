@@ -2,13 +2,6 @@ const prompt = require("prompt-sync")();
 
 const categorias = ["verduras", "lacteos", "carnes", "fruta", "congelados", "dulces", "otros"];
 let listaDeCompras = [];
-let verduras = [];
-let lacteos = [];
-let carnes = [];
-let fruta = [];
-let congelados = [];
-let dulces = [];
-let otros = [];
 let entrada = "";
 let categoria = "";
 
@@ -27,6 +20,7 @@ while(true){
 }
 
 console.log(`Final entrada: ${entrada}`);
+imprimir_Lista();
 
 function menu_Categoria(){
     let mensaje = "";
@@ -46,5 +40,25 @@ function iniciar_Pregunta(pregunta){
     }
 
     return respuesta;
+}
+
+function imprimir_Lista(){
+    console.log("Lista de compras:");
+    
+    let alimento = "";
+
+    for(let i_categoria = 0; i_categoria < categorias.length; i_categoria++){
+        
+        alimento = `${categorias[i_categoria]}: `;
+        
+        for (let i_lista = 0; i_lista < listaDeCompras.length; i_lista++) {
+            if(listaDeCompras[i_lista].includes(":"+categorias[i_categoria])){
+                alimento == `${categorias[i_categoria]}: ` ? alimento += `${listaDeCompras[i_lista].replace(":"+categorias[i_categoria],"")}`: alimento += `, ${listaDeCompras[i_lista].replace(":"+categorias[i_categoria],"")}`;
+            }
+        }
+
+        alimento == `${categorias[i_categoria]}: ` ? alimento = "": console.log(alimento);
+    }
+    return;
 }
 

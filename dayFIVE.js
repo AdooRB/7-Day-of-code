@@ -113,7 +113,7 @@ function eliminar_dato(pregunta){
     return;
 }
 
-//añade adono para la impresión de la List de Compras
+//añade ardono para la impresión de la List de Compras
 function crear_adorno(adorno){
     let nuevoAdorno = "";
     for(let i = 0;i < 18; i++){

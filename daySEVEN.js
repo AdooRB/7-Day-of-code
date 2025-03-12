@@ -5,13 +5,16 @@ let opcion = 0;
 let numero_uno = 0;
 let numero_dos = 0;
 let resultado = 0;
+let seguirOperaciones = false;
 
 while(true){
     opcion  =   preguntar_operacion(`¿Cuál operación quieres realizar? (ingresa #) ${crear_Menu()}`);
     numero_uno  =   preguntar_numeros(1);
     numero_dos  =   preguntar_numeros(2);
     resultado   =   ejecutar_operaciones(numero_uno, numero_dos);
-    break;
+    seguirOperaciones = preguntar_salir(`¿Quieres realizar otra operación?  `);
+    
+    if(seguirOperaciones == false) break;
 }
 
 function crear_Menu(){
@@ -39,14 +42,24 @@ function preguntar_operacion(pregunta){
 
 function preguntar_numeros(numero){
     let respuesta = 0;
-    
+    let opcion = 0;
+       
     if(numero == 1){
-        respuesta = prompt(`Ingresa el ${opcion == 1 ? "primer sumando" : opcion == 2 ? "minuendo" : opcion == 3 ? "multiplicando": "dividendo"}:  `);
+        
+        if(seguirOperaciones == false){
+            respuesta = prompt(`Ingresa el ${opcion == 1 ? "primer sumando" : opcion == 2 ? "minuendo" : opcion == 3 ? "multiplicando": "dividendo"}:  `);
+            opcion = parseInt(respuesta)
+        }else{
+            opcion = resultado;
+        }
+
     }else{
         respuesta = prompt(`Ingresa el ${opcion == 1 ? "segundo sumando" : opcion == 2 ? "sustraendo" : opcion == 3 ? "multiplicador": "divisor"}:  `);
+        opcion = parseInt(respuesta);
     }
     
-    return parseInt(respuesta);
+    
+    return opcion;
 
 }
 
@@ -76,6 +89,18 @@ function ejecutar_operaciones(numero1, numero2){
     console.log(`   ${numero1}  ${opcion == 1 ? "+" : opcion == 2 ? "-" : opcion == 3 ? "*": "/"}  ${numero2}   =   ${total}`);
 
     return total;
+}
+
+function preguntar_salir(pregunta){
+    let respuesta = prompt(pregunta);
+    let salir = false;
+    while(respuesta.toUpperCase() != 'SI' && respuesta.toUpperCase() != 'NO'){
+        console.log("Valor incorrecto. Digitaliza 'si' o 'no'.");
+        respuesta = prompt(pregunta);
+    }
+
+    respuesta.toUpperCase() == 'SI' ? salir = true : salir = false;
+    return salir;
 }
 
 function sumar(sumando1, sumando2){
